@@ -23,13 +23,13 @@ const LinkPage = () => {
             text="+ Add new link"
             textColor="text-[#633CFF]"
             type="submit"
-            spacing="w-[90.1%]"
+            spacing="w-[89.99%]"
             bg="bg-white"
             border="border border-[#633CFF]"
             onClick={() => {}}
             disabled={""}
           />
-          <CardInput />
+          {/* <CardInput /> */}
           <div className="bg-[#FAFAFA] flex flex-col gap-2 justify-center items-center w-[90%] px-4 py-6 mt-6 rounded-xl">
             <img src={illustration} alt="illustration" className="block" />
             <h3 className="font-bold text-2xl text-[#333333]">
