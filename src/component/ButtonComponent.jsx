@@ -10,7 +10,7 @@ const ButtonComponent = ({
 }) => {
   return (
     <button
-      className={`${textColor} ${border} ${spacing} font-semibold text-[16px] ${bg} w-full inline-flex items-center justify-center px-[27px] py-[11px] rounded-[8px] ${
+      className={`${textColor} ${border} ${spacing} font-semibold text-[16px] ${bg} inline-flex items-center justify-center px-[27px] py-[11px] rounded-[8px] ${
         disabled ? "bg-[#633CFF] cursor-not-allowed opacity-50" : `${bg}`
       }`}
       onClick={onClick}

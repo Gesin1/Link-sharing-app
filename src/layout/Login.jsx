@@ -126,6 +126,7 @@ const Login = () => {
             <ButtonComponent
               type="submit"
               text="Login"
+              spacing="w-full"
               onClick={formik.handleSubmit}
               disabled={!formik.isValid || !formik.dirty}
             />
