@@ -4,7 +4,7 @@ import {
   createRoutesFromElements,
   RouterProvider,
 } from "react-router-dom";
-
+import LinkPage from "./layout/LinkPage";
 import Login from "./layout/Login";
 import CreateAccount from "./layout/CreateAccount";
 
@@ -14,6 +14,7 @@ const App = () => {
       <Route>
         <Route index element={<Login />} />
         <Route path="/createAccount" element={<CreateAccount />} />
+        <Route path="/linkPage" element={<LinkPage />} />
       </Route>
     )
   );

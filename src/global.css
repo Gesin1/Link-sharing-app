@@ -6,4 +6,5 @@ input::placeholder {
 body {
   font-family: "Instrument Sans", "sans-serif";
   box-sizing: border-box;
+  background-color: hsla(0, 0%, 98%, 1);
 }
