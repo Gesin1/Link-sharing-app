@@ -6,13 +6,16 @@ export default {
       backgroundImage: {
         email: "url('/src/img/mail-icon.svg')",
         lock: "url('/src/img/lock-icon.svg')",
+        link: "url('/src/img/link-black.svg')",
       },
       backgroundPosition: {
         "email-10px-center": "20px center",
         "lock-20px-center": "20px center",
+        "link-20px-center": "20px center",
       },
       backgroundSize: {
         "email-50px": "15px",
+        "link-50px": "15px",
         "lock-50px": "13px",
       },
     },
