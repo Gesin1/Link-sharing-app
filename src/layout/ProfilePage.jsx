@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Navbar from "../component/Navbar";
 import linked from "../img/link-black.svg";
 import colorProfile from "../img/profile-color.svg";
@@ -68,7 +68,7 @@ const ProfilePage = () => {
         textLink="text-[#737373] hidden md:block font-semibold text-[16px]"
         textProfile="text-[#633CFF] hover:none hidden md:block font-semibold text-[16px]"
       />
-      <div className="flex flex-col lg:flex-row-reverse lg:justify-center lg:w-full py-4 mb-4 lg:mb-0 lg:pb-4">
+      <div className="flex flex-col lg:flex-row-reverse lg:justify-center lg:w-full lg:py-4 mb-4 lg:mb-0 lg:pb-4">
         <main className="flex flex-col gap-4 items-center justify-center pt-8 mx-4 my-8 bg-white rounded-lg lg:w-[58%] lg:mt-0 lg:mx-0 lg:pb-0 lg:mb-0 lg:pt-0 ">
           <div className="flex flex-col justify-start items-start gap-2 px-8 mb-10 w-full lg:mb-4 lg:px-10 lg:pt-4">
             <h2 className="font-bold text-2xl text-[#333333]">
@@ -140,15 +140,15 @@ const ProfilePage = () => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         placeholder="Ben"
-                        className={`${
+                        className={`font-normal text-[16px] py-3 outline-none box-border border w-full md:w-[70%] rounded-lg hover:shadow-[1px_1px_10px_1px_#c5baee] ${
                           formik.touched.firstName && formik.errors.firstName
-                            ? ""
-                            : "border-[#FF3939] hover:shadow-none outline none"
-                        }font-normal text-[16px] py-3 outline-none w-full md:w-[70%] rounded-lg`}
+                            ? "border-[#FF3939] hover:shadow-none"
+                            : "border-[#633CFF]"
+                        }`}
                       />
                     </Form.Control>
                     {formik.touched.firstName && formik.errors.firstName ? (
-                      <div className="absolute right-2 top-8 transform -translate-y-1/ font-normal text-xs text-[#FF3939]">
+                      <div className="absolute right-2 top-5 transform -translate-y-1/ font-normal text-xs text-[#FF3939]">
                         {formik.errors.firstName}
                       </div>
                     ) : null}
@@ -167,15 +167,15 @@ const ProfilePage = () => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         placeholder="Wright"
-                        className={`${
+                        className={`font-normal text-[16px] py-3 outline-none box-border border w-full md:w-[70%] rounded-lg hover:shadow-[1px_1px_10px_1px_#c5baee] ${
                           formik.touched.lastName && formik.errors.lastName
-                            ? ""
-                            : "border-[#FF3939] hover:shadow-none outline none"
-                        }font-normal text-[16px] py-3 outline-none w-full md:w-[70%] rounded-lg`}
+                            ? "border-[#FF3939] hover:shadow-none"
+                            : "border-[#633CFF]"
+                        }`}
                       />
                     </Form.Control>
                     {formik.touched.lastName && formik.errors.lastName ? (
-                      <div className="absolute right-2 top-8 transform -translate-y-1/ font-normal text-xs text-[#FF3939]">
+                      <div className="absolute right-2 top-5 transform -translate-y-1/ font-normal text-xs text-[#FF3939]">
                         {formik.errors.lastName}
                       </div>
                     ) : null}
@@ -194,15 +194,15 @@ const ProfilePage = () => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         placeholder="ben@example.com"
-                        className={`${
+                        className={`font-normal text-[16px] py-3 outline-none box-border border w-full md:w-[70%] rounded-lg hover:shadow-[1px_1px_10px_1px_#c5baee] ${
                           formik.touched.email && formik.errors.email
-                            ? ""
-                            : "border-[#FF3939] hover:shadow-none outline none"
-                        }font-normal text-[16px] py-3 outline-none w-full md:w-[70%] rounded-lg`}
+                            ? "border-[#FF3939] hover:shadow-none"
+                            : "border-[#633CFF]"
+                        }`}
                       />
                     </Form.Control>
                     {formik.errors.email ? (
-                      <div className="absolute right-2 top-8 transform -translate-y-1/ font-normal text-xs text-[#FF3939]">
+                      <div className="absolute right-2 top-5 transform -translate-y-1/ font-normal text-xs text-[#FF3939]">
                         {formik.errors.email}
                       </div>
                     ) : null}

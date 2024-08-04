@@ -34,7 +34,10 @@ const Navbar = ({
           <span className={`${textProfile}`}>Profile Details</span>
         </Link>
       </div>
-      <Link className="border border-[#633CFF] py-[11px] flex flex-row justify-center items-center px-[16px] rounded-lg hover:bg-[#EFEBFF]">
+      <Link
+        to={"/previewPage"}
+        className="border border-[#633CFF] py-[11px] flex flex-row justify-center items-center px-[16px] rounded-lg hover:bg-[#EFEBFF]"
+      >
         <img src={eye} alt="Preview" className="block md:hidden" />
         <span className="hidden md:block text-[#633CFF] font-semibold text-[16px] ">
           Preview
