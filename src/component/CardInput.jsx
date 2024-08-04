@@ -8,13 +8,18 @@ import twitter from "../img/black-icon/twitter-icon.svg";
 import arrow from "../img/arrowDown-icon.svg";
 import bar from "../img/bar.svg";
 
-const CardInput = ({ index, onRemove, onChange }) => {
+const CardInput = ({ index, onRemove, onPlatformChange, onLinkChange }) => {
   const [selectedItemIdx, setSelectedItemIdx] = useState(0);
   const [removeBg, setRemoveBg] = useState(false);
 
+  const handlePlatformChange = (value) => {
+    setSelectedItemIdx(value);
+    onPlatformChange(menuItems[value].name);
+  };
+
   const handleInputChange = (event) => {
     setRemoveBg(true);
-    onChange(event.target.value);
+    onLinkChange(event.target.value);
   };
 
   const menuItems = [
@@ -62,10 +67,7 @@ const CardInput = ({ index, onRemove, onChange }) => {
         </div>
       </div>
 
-      <Select.Root
-        value={selectedItemIdx}
-        onValueChange={(value) => setSelectedItemIdx(Number(value))}
-      >
+      <Select.Root value={selectedItemIdx} onValueChange={handlePlatformChange}>
         <div className="w-full">
           <label className="text-xs text-[#333333] mb-1">Platform</label>
           <Select.Trigger className="w-full inline-flex items-center justify-between px-4 py-3 text-sm text-gray-600 bg-white border rounded-lg shadow-sm outline-none focus:ring-offset-2 ">

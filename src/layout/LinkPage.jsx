@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 import Navbar from "../component/Navbar";
 import illustration from "../img/illust-icon.svg";
 import ButtonComponent from "../component/ButtonComponent";
@@ -11,7 +13,7 @@ const LinkPage = () => {
 
   const handleClick = () => {
     setShowCard([...showCard, {}]);
-    setInputs([...inputs, ""]);
+    setInputs([...inputs, { name: "", link: "" }]);
   };
 
   const handleRemoveLink = (index) => {
@@ -19,14 +21,32 @@ const LinkPage = () => {
     setInputs(inputs.filter((_, i) => i !== index));
   };
 
-  const handleInputWithButton = (index, value) => {
+  const handleInputWithButton = (index, value, type) => {
     const updateInputButton = [...inputs];
-    updateInputButton[index] = value;
+    if (!updateInputButton[index]) {
+      updateInputButton[index] = { name: "", link: "" };
+    }
+    updateInputButton[index][type] = value;
     setInputs(updateInputButton);
   };
 
+  const handleSave = async () => {
+    try {
+      const docRef = await addDoc(collection(db, "links"), {
+        links: inputs,
+      });
+      console.log(docRef.id);
+    } catch (e) {
+      console.error("Something as went wrong", e);
+    }
+  };
+
   const saveButton =
-    showCard.length === 0 || inputs.some((input) => input.trim() === "");
+    showCard.length === 0 ||
+    inputs.some(
+      (input) =>
+        (input.link || "").trim() === "" || (input.name || "").trim() === ""
+    );
 
   return (
     <div>
@@ -69,7 +89,12 @@ const LinkPage = () => {
                 key={index}
                 index={index}
                 onRemove={handleRemoveLink}
-                onChange={(value) => handleInputWithButton(index, value)}
+                onPlatformChange={(value) =>
+                  handleInputWithButton(index, value, "name")
+                }
+                onLinkChange={(value) =>
+                  handleInputWithButton(index, value, "link")
+                }
               />
             ))
           )}
@@ -79,13 +104,17 @@ const LinkPage = () => {
               type="submit"
               text="Save"
               spacing="mb-3 w-[90%] md:w-[15%] md:mr-6 outline-none"
-              onClick={() => {}}
+              onClick={handleSave}
               disabled={saveButton}
             />
           </div>
         </main>
-        <div className="hidden lg:flex lg:items-center lg:justify-center lg:w-[38%] lg:bg-white mr-8 ">
-          <img src={phone} alt="phone image" className="w-[280px] h-[500px]" />
+        <div className="hidden lg:flex lg:items-center lg:justify-center lg:flex-shrink-0 lg:w-[38%] h-[650px] lg:bg-white mr-8 ">
+          <img
+            src={phone}
+            alt="phone image"
+            className="w-[280px] h-[500px] object-contain flex-shrink-0 lg:relative"
+          />
         </div>
       </div>
     </div>
