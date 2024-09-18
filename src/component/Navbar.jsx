@@ -15,9 +15,10 @@ const Navbar = ({
 }) => {
   return (
     <nav className="bg-white flex flex-row justify-between items-center p-4 md:m-4 md:rounded-xl">
-      <img src={mobLogo} alt="devlinks" className="block md:hidden" />
-      <img src={webLogo} alt="devlinks" className="hidden md:block" />
-
+      <Link to={"/linkPage"}>
+        <img src={mobLogo} alt="devlinks" className="block md:hidden" />
+        <img src={webLogo} alt="devlinks" className="hidden md:block" />
+      </Link>
       <div className="flex flex-row justify-center items-center">
         <div>
           <Link to={"/linkPage"} className={`${className}`}>

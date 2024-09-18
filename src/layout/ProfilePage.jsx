@@ -9,10 +9,85 @@ import mail from "../img/mail.svg";
 import mailColor from "../img/mail-white.svg";
 import phone from "../img/phone-icon.svg";
 import file from "../img/file.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as Form from "@radix-ui/react-form";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { doc, setDoc } from "firebase/firestore";
+import { db, storage } from "../firebaseConfig";
+import { getAuth } from "firebase/auth";
+import getUserProfile from "../hook/getUserProfile";
+import useSaveLinks from "../hook/savelink";
+import facebook from "../img/facebook.svg";
+import linkedIn from "../img/linkedin.svg";
+import github from "../img/Vector.svg";
+import CardButtonComponet from "../component/CardButtonComponet";
 
 const ProfilePage = () => {
+  const [image, setImage] = useState(null);
+  const { userData, Loading: loadingProfile } = getUserProfile();
+  const { saveLinks, Loading: loadingData, error } = useSaveLinks();
+
+  if (loadingData || loadingProfile) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error Loding: {error.message}</p>;
+  }
+
+  const getImageAndBg = (name) => {
+    switch (name) {
+      case "GitHub":
+        return { image: github, bg: "bg-black" };
+      case "LinkedIn":
+        return { image: linkedIn, bg: "bg-blue-400" };
+      case "Facebook":
+        return { image: facebook, bg: "bg-blue-800" };
+      default:
+        return { image: github, bg: "bg-gray-300" };
+    }
+  };
+
+  useEffect(() => {
+    if (userData) {
+      formik.setValues({
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email,
+      });
+    }
+  }, [userData]);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const uploadImageToFirebase = async (file) => {
+    if (!file) return null;
+    const storageRef = ref(storage, `profilePicture/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        null,
+        (error) => reject(error),
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            resolve(downloadURL);
+          });
+        }
+      );
+    });
+  };
+
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -24,24 +99,25 @@ const ProfilePage = () => {
       lastName: Yup.string().required("Last name can't be empty"),
       email: Yup.string().email("Invalid email address"),
     }),
-    onSubmit: (value) => {
-      console.log(value);
+
+    onSubmit: async (value) => {
+      try {
+        const fileInput = document.getElementById("fileInput").files[0];
+        const imageUrl = await uploadImageToFirebase(fileInput);
+        const showResult = await setDoc(doc(db, "users", value.email), {
+          ...value,
+          profilePicture: imageUrl,
+        });
+        console.log(showResult);
+        notification();
+      } catch (error) {
+        toast.error("Error updating profile", {
+          position: "top-left",
+          autoClose: 4000,
+        });
+      }
     },
   });
-
-  const [image, setImage] = useState(null);
-
-  const imageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-        notification();
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const notification = () => {
     toast.success(
@@ -115,7 +191,7 @@ const ProfilePage = () => {
                   id="fileInput"
                   className="p-12 bg-[#EFEBFF] rounded-lg"
                   accept="image/*"
-                  onChange={imageChange}
+                  onChange={handleImageChange}
                   hidden
                 />
               </div>
@@ -224,12 +300,39 @@ const ProfilePage = () => {
             </Form.Submit>
           </div>
         </main>
-        <div className="hidden lg:flex lg:items-center lg:justify-center lg:flex-shrink-0 lg:w-[38%] h-[720px] lg:bg-white mr-8 ">
+        <div className="hidden lg:flex lg:items-center lg:justify-center lg:flex-shrink-0 lg:w-[38%] h-[650px] lg:bg-white mr-8 lg:relative overflow-hidden">
           <img
             src={phone}
             alt="phone image"
-            className="w-[280px] h-[500px] object-contain flex-shrink-0 lg:relative"
+            className="w-[280px] h-[600px] object-contain flex-shrink-0 lg:relative"
           />
+          <div className="scollable-container flex flex-col gap-[22px] absolute top-[45%] left-1/2 transform -translate-x-1/2  w-[220px] overflow-y-auto h-[calc(100%-350px)] ">
+            {saveLinks.map((link, index) => {
+              const { image, bg } = getImageAndBg(link.name);
+              return (
+                <CardButtonComponet
+                  key={index}
+                  name={link.name}
+                  image={image}
+                  bg={bg}
+                  url={link.link}
+                />
+              );
+            })}
+          </div>
+          <div className="flex flex-col items-center justify-center absolute top-[15%] ">
+            <img
+              src={userData?.profilePicture}
+              alt=""
+              className="w-[100px] h-[100px] rounded-[50%] border-2  mb-1"
+            />
+            <p className="text-[#333] font-semibold text-[18px]">
+              {userData?.firstName} {userData?.lastName}
+            </p>
+            <p className=" text-[#737373] font-normal text-xs">
+              {userData?.email}
+            </p>
+          </div>
         </div>
       </div>
     </div>

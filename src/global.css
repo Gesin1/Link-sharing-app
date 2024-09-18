@@ -8,3 +8,13 @@ body {
   box-sizing: border-box;
   background-color: hsla(0, 0%, 98%, 1);
 }
+
+.scollable-container {
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scollable-container::-webkit-scrollbar {
+  display: none;
+}
