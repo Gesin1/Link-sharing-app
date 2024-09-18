@@ -10,10 +10,18 @@ const useSaveLinks = () => {
 
   const fetchLink = async () => {
     try {
+      const user = getAuth().currentUser;
+      if (!user) throw new Error("user not authenticated");
+
+      const userId = user.uid;
+
       const querySnapshort = await getDocs(collection(db, "links"));
       const linksArray = [];
+
       querySnapshort.forEach((doc) => {
-        linksArray.push(...doc.data().links);
+        if (doc.data().userId === userId) {
+          linksArray.push(...doc.data().links);
+        }
       });
       setSaveLinks(linksArray);
     } catch (error) {
